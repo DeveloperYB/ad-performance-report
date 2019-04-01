@@ -29,6 +29,8 @@ export default class MyDocument extends Document {
                         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
                         crossOrigin="anonymous"
                     />
+                    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+                    <link rel="stylesheet" href="/static/css/nomalize.css" />
                     {this.props.styleTags}
                 </Head>
                 <body>

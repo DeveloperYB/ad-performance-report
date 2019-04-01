@@ -1,29 +1,33 @@
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import DatePicker from 'react-datepicker';
+import styled from 'styled-components';
 
-const linkStyle = {
-    marginRight: '1rem'
-};
-const Header = () => {
+const HeaderWrap = styled.div`
+    background: #00a47b;
+    padding: 2%;
+    font-size: 1.5rem;
+    .homeBtn {
+        color: #fff;
+    }
+`;
+const Header = props => {
+    console.log(props);
     return (
-        <div className="headerWrap">
-            <div>
-                <Link href="/">
-                    <a style={linkStyle}>홈</a>
-                </Link>
-                <Link href="/total">
-                    <a style={linkStyle}>소개</a>
-                </Link>
-                <Link href="/ssr-test">
-                    <a style={linkStyle}>SSR 테스트</a>
-                </Link>
-            </div>
+        <HeaderWrap>
+            <Link href="/">
+                <a className="homeBtn">
+                    <i className="fas fa-home" />
+                </a>
+            </Link>
+            <Link href="/ssr-test">
+                <a>SSR 테스트</a>
+            </Link>
             <style jsx>{`
                 .headerWrap {
-                    width: 100%;
-                    background: #00a47b;
                 }
             `}</style>
-        </div>
+        </HeaderWrap>
     );
 };
 
