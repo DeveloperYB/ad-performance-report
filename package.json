@@ -1,0 +1,26 @@
+{
+    "name": "ad-performance-report",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/DeveloperYB/ad-performance-report.git",
+    "author": "YouBeen Kim <qlqjsk@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.18.0",
+        "csvtojson": "^2.0.8",
+        "isomorphic-unfetch": "^3.0.0",
+        "next": "^8.0.3",
+        "react": "^16.8.6",
+        "react-datepicker": "^2.3.0",
+        "react-dom": "^16.8.6",
+        "styled-components": "^4.2.0"
+    },
+    "scripts": {
+        "dev": "next",
+        "build": "next build",
+        "start": "next start"
+    },
+    "devDependencies": {
+        "babel-plugin-styled-components": "^1.10.0"
+    }
+}
