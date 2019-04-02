@@ -31,55 +31,12 @@ function Fetch(apiForm) {
 function* workerSaga(action) {
     const { apiForm } = action;
     try {
-        // console.log('apiFormapiFormapiFormapiForm', apiForm);
-        let initData = {};
-        if (apiForm.path === 'all') {
-        } else if (typeof apiForm.path !== 'string') {
-        } else {
-            const data = yield call(Fetch, apiForm);
-            if (!data) {
-                throw 'API Status Error';
-            } else {
-                initData = data;
-                // console.log('datadatadata', data);
-            }
+        const data = yield call(Fetch, apiForm);
+        if (!data) {
+            throw 'API Status Error';
         }
-        // if (Array.isArray(apiForm)) {
-        //     const parallelCall = [];
-
-        //     apiForm.forEach((v, i) => {
-        //         parallelCall.push(call(Fetch, apiForm[i]));
-        //     });
-        //     const data = yield all(parallelCall);
-        //     if (data.length === apiForm.length) {
-        //         data.forEach((v, i) => {
-        //             if (!v === 200) {
-        //                 throw 'API Status Error';
-        //             } else {
-        //                 if (apiForm[i].path) {
-        //                     if (apiForm[i].path.indexOf('/') !== -1) {
-        //                         initData[apiForm[i].path.split('/')[0]] = v;
-        //                     } else initData[apiForm[i].path] = v;
-        //                 } else {
-        //                     initData['data_' + i] = v;
-        //                 }
-        //             }
-        //         });
-        //     } else throw 'API Status Error';
-        // } else {
-        //     const data = yield call(Fetch, apiForm);
-        //     if (!data) {
-        //         throw 'API Status Error';
-        //     } else {
-        //         initData = data;
-        //         if (initData && initData.status && initData.status !== 200)
-        //             throw 'API Status Error';
-        //         if (apiForm.path && apiForm.path.indexOf('/count') !== -1)
-        //             initData = initData.datas.count;
-        //     }
-        // }
-        throw 'asdfasf';
-        yield put({ type: 'CSV_CALL_SUCCESS', data: initData });
+        // throw 'asdfasf';
+        yield put({ type: 'CSV_CALL_SUCCESS', data });
     } catch (error) {
         yield put({ type: 'CSV_CALL_FAILURE', error });
     }

@@ -8,10 +8,19 @@ const initialState = {
         Fn: {}
     },
     csvLoading: false,
-    data: {}
+    data: {},
+    searchDate: {
+        startDate: null,
+        endDate: null
+    }
 };
 const baseStore = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.CHANGEDATE:
+            if (action) {
+                console.log(action);
+                return state;
+            }
         case actionTypes.MODAL:
             if (action) {
                 console.log(action);

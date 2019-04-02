@@ -2,7 +2,8 @@ export const actionTypes = {
     CSV_CALL_REQUEST: 'CSV_CALL_REQUEST',
     CSV_CALL_SUCCESS: 'CSV_CALL_SUCCESS',
     CSV_CALL_FAILURE: 'CSV_CALL_FAILURE',
-    MODAL: 'MODAL'
+    MODAL: 'MODAL',
+    CHANGEDATE: 'CHANGEDATE'
 };
 
 export const actions = {
@@ -12,5 +13,10 @@ export const actions = {
         title,
         contents,
         Fn
+    }),
+    CHANGEDATE: (startDate, endDate) => ({
+        type: actionTypes.CHANGEDATE,
+        startDate,
+        endDate
     })
 };

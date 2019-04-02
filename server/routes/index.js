@@ -42,10 +42,17 @@ router.get('/data', (req, res) => {
                 })
             );
             results.then(v => {
+                const searchRange = allFilePath
+                    .map(v => {
+                        return Number(v.replace(/\.csv$/, ''));
+                    })
+                    .sort((a, b) => {
+                        return a - b;
+                    });
                 if (v.length) {
-                    res.json({ data: v, status: 200 });
+                    res.json({ data: v, status: 200, searchRange });
                 } else {
-                    res.json({ data: [], status: 200 });
+                    res.json({ data: [], status: 200, searchRange });
                 }
             });
         }

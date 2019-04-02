@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import Header from './Header';
 import { connect } from 'react-redux';
 import { actions } from '../components/redux';
+import styled from 'styled-components';
+
+const LayoutContainer = styled.div`
+    padding-top: 40px;
+`;
 
 class Layout extends Component {
     constructor(props) {
@@ -16,22 +21,25 @@ class Layout extends Component {
         const { data } = this.state;
         const { csvRequest } = this.props;
         if (!Object.keys(data).length) {
-            csvRequest({
-                url: '/api/',
-                path: 'data',
-                params: {
-                    data: []
-                }
-            });
+            // csvRequest({
+            //     url: '/api/',
+            //     path: 'data',
+            //     params: {
+            //         data: []
+            //     }
+            //     // 20181230,
+            //     // 20181231,
+            //     // 20190101
+            // });
         }
     }
     render() {
         const { children } = this.props;
         return (
-            <div>
+            <LayoutContainer>
                 <Header />
                 {children}
-            </div>
+            </LayoutContainer>
         );
     }
 }
