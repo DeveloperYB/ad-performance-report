@@ -2,10 +2,13 @@ import { actionTypes } from './index';
 
 const initialState = {
     modal: {
-        modalType: '',
+        modalType: '', //que , err , suc
         title: '',
         contents: '',
-        Fn: {}
+        Fn: {
+            cancel: null,
+            confirm: null
+        }
     },
     csvLoading: false,
     data: {},
@@ -14,17 +17,32 @@ const initialState = {
         endDate: null
     }
 };
+
+//2018/12/30 ~ 2019/01/29
+
 const baseStore = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.CHANGEDATE:
-            if (action) {
-                console.log(action);
-                return state;
+            if (action.flag === 'start') {
+                return { ...state, searchDate: { ...state.searchDate, startDate: action.date } };
+            } else if (action.flag === 'end') {
+                return { ...state, searchDate: { ...state.searchDate, endDate: action.date } };
+            } else {
+                return { ...state, searchDate: { startDate: action.date, endDate: null } };
             }
         case actionTypes.MODAL:
             if (action) {
-                console.log(action);
-                return state;
+                const { modalType, title, contents, Fn } = action;
+                return {
+                    ...state,
+                    modal: {
+                        ...state.modal,
+                        modalType,
+                        title,
+                        contents,
+                        Fn
+                    }
+                };
             }
             break;
         case actionTypes.API_CALL_REQUEST:

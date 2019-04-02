@@ -14,9 +14,9 @@ export const actions = {
         contents,
         Fn
     }),
-    CHANGEDATE: (startDate, endDate) => ({
+    CHANGEDATE: (date, flag) => ({
         type: actionTypes.CHANGEDATE,
-        startDate,
-        endDate
+        date,
+        flag //single,start,end
     })
 };

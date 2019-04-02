@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { actions } from '../components/redux';
 import styled from 'styled-components';
 
+import Modal from './shared/Modal';
+
 const LayoutContainer = styled.div`
     padding-top: 40px;
 `;
@@ -34,21 +36,27 @@ class Layout extends Component {
         }
     }
     render() {
-        const { children } = this.props;
+        const { children, modalType } = this.props;
         return (
             <LayoutContainer>
                 <Header />
                 {children}
+                {modalType && <Modal />}
             </LayoutContainer>
         );
     }
 }
 
 const mapStateToProps = state => {
-    const { csvLoading, data } = state.baseStore;
+    const {
+        csvLoading,
+        data,
+        modal: { modalType }
+    } = state.baseStore;
     return {
         csvLoading,
-        data
+        data,
+        modalType
     };
 };
 const mapDispatchProps = dispatch => {
