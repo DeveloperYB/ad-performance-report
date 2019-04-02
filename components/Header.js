@@ -12,7 +12,7 @@ const HeaderWrap = styled.div`
     }
 `;
 const Header = props => {
-    console.log(props);
+    // console.log(props);
     return (
         <HeaderWrap>
             <Link href="/">
