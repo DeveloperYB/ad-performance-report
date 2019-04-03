@@ -32,7 +32,15 @@ const baseStore = (state = initialState, action) => {
             }
         case actionTypes.MODAL:
             if (action) {
-                const { modalType, title, contents, Fn } = action;
+                const {
+                    modalType,
+                    title,
+                    contents,
+                    Fn = {
+                        cancel: null,
+                        confirm: null
+                    }
+                } = action;
                 return {
                     ...state,
                     modal: {
@@ -45,22 +53,61 @@ const baseStore = (state = initialState, action) => {
                 };
             }
             break;
-        case actionTypes.API_CALL_REQUEST:
+        case actionTypes.CSV_CALL_REQUEST:
             if (action) {
-                console.log(action);
-                return state;
+                return {
+                    ...state,
+                    csvLoading: true
+                };
             }
             break;
-        case actionTypes.API_CALL_SUCCESS:
+        case actionTypes.CSV_CALL_SUCCESS:
             if (action) {
-                console.log(action);
-                return state;
+                if (action.data.length) {
+                    return {
+                        ...state,
+                        csvLoading: false,
+                        modal: {
+                            modalType: 'err', //que , err , suc
+                            title: 'Non Data',
+                            contents: '정보가 없습니다.',
+                            Fn: {
+                                cancel: null,
+                                confirm: null
+                            }
+                        }
+                    };
+                }
+                return {
+                    ...state,
+                    csvLoading: false,
+                    modal: {
+                        modalType: 'err', //que , err , suc
+                        title: 'Non Data',
+                        contents: '정보가 없습니다.',
+                        Fn: {
+                            cancel: null,
+                            confirm: null
+                        }
+                    }
+                };
             }
             break;
-        case actionTypes.API_CALL_FAILURE:
+        case actionTypes.CSV_CALL_FAILURE:
             if (action) {
-                console.log(action);
-                return state;
+                return {
+                    ...state,
+                    csvLoading: false,
+                    modal: {
+                        modalType: 'err', //que , err , suc
+                        title: 'API ERROR',
+                        contents: '재시도 부탁드립니다.',
+                        Fn: {
+                            cancel: null,
+                            confirm: null
+                        }
+                    }
+                };
             }
             break;
         default:

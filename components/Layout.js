@@ -5,6 +5,7 @@ import { actions } from '../components/redux';
 import styled from 'styled-components';
 
 import Modal from './shared/Modal';
+import Loading from './shared/Loading';
 
 const LayoutContainer = styled.div`
     padding-top: 40px;
@@ -19,29 +20,14 @@ class Layout extends Component {
             data
         };
     }
-    componentDidMount() {
-        const { data } = this.state;
-        const { csvRequest } = this.props;
-        if (!Object.keys(data).length) {
-            // csvRequest({
-            //     url: '/api/',
-            //     path: 'data',
-            //     params: {
-            //         data: []
-            //     }
-            //     // 20181230,
-            //     // 20181231,
-            //     // 20190101
-            // });
-        }
-    }
     render() {
-        const { children, modalType } = this.props;
+        const { children, modalType, csvLoading } = this.props;
         return (
             <LayoutContainer>
                 <Header />
                 {children}
                 {modalType && <Modal />}
+                {csvLoading && <Loading />}
             </LayoutContainer>
         );
     }
@@ -51,22 +37,18 @@ const mapStateToProps = state => {
     const {
         csvLoading,
         data,
-        modal: { modalType }
+        modal: { modalType },
+        searchDate
     } = state.baseStore;
     return {
         csvLoading,
         data,
-        modalType
+        modalType,
+        searchDate
     };
 };
 const mapDispatchProps = dispatch => {
     return {
-        csvRequest: apiForm => {
-            dispatch({
-                type: 'CSV_CALL_REQUEST',
-                apiForm
-            });
-        },
         modalFlag: (modalType, title, contents, Fn) => {
             dispatch(actions.MODAL(modalType, title, contents, Fn));
         }

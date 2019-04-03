@@ -31,7 +31,7 @@ const HeaderWrap = styled.div`
 const SearchDateWrap = styled.div`
     display: ${({ toggle }) => `${toggle ? 'block' : 'none'}`};
     position: absolute;
-    top: 45px;
+    top: 44px;
     right: 0;
     border: 1px solid #00a47b;
     line-height: 1;
@@ -63,6 +63,13 @@ const SearchBtn = styled.div`
         color: #00a47b;
         background: #fff;
     }
+    ${({ savable }) => {
+        if (!savable)
+            return `
+        opacity:0.5;
+        cursor: not-allowed;
+        `;
+    }}
 `;
 class Header extends Component {
     constructor(props) {
@@ -73,12 +80,60 @@ class Header extends Component {
         };
         this.toggleFn = this.toggleFn.bind(this);
         this.singleDateFn = this.singleDateFn.bind(this);
+        this.searchFn = this.searchFn.bind(this);
+    }
+    searchFn() {
+        const { data } = this.state;
+        const {
+            csvRequest,
+            searchDate: { startDate, endDate }
+        } = this.props;
+        const addDays = (date, days) => {
+            var date = new Date(date.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        };
+        const formatDate = date => {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            return Number([year, month, day].join(''));
+        };
+        const getDates = (startDate, stopDate) => {
+            var dateArray = new Array();
+            var currentDate = startDate;
+            while (currentDate <= stopDate) {
+                dateArray.push(formatDate(new Date(currentDate)));
+                currentDate = addDays(currentDate, 1);
+            }
+            return dateArray;
+        };
+        let csvDataArr = [];
+        if (startDate && endDate) {
+            csvDataArr = getDates(startDate, endDate);
+        }
+        if (startDate && !endDate) {
+            csvDataArr = [formatDate(startDate)];
+        }
+        console.log('csvDataArr', csvDataArr);
+        csvRequest({
+            url: '/api/',
+            path: 'data',
+            params: {
+                data: csvDataArr
+            }
+        });
     }
     componentDidMount() {
         // 데이터 파일 기간 : 2018/12/30 ~ 2019/01/29
         // 기간이 1월 이라고 가정하에 페이지 시작.
-        this.props.changeDate(new Date('12/30/2018'), 'start');
-        this.props.changeDate(new Date('01/29/2019'), 'end');
+        this.props.changeDate(new Date('01/31/2019'), 'start');
+        // this.props.changeDate(new Date('01/31/2019'), 'start');
+        this.props.changeDate(new Date('01/31/2019'), 'end');
+        //this.searchFn();
     }
     toggleFn() {
         this.setState({
@@ -86,16 +141,21 @@ class Header extends Component {
         });
     }
     singleDateFn() {
-        this.setState({
+        let newState = {
             singleDate: !this.state.singleDate
-        });
+        };
+        if (!this.state.singleDate) {
+            this.props.changeDate(null, 'end');
+        }
+        this.setState(newState);
     }
     render() {
         const {
             csvLoading,
             data,
             searchDate: { startDate, endDate },
-            changeDate
+            changeDate,
+            modalFlag
         } = this.props;
         const { toggle, singleDate } = this.state;
         let savable = false;
@@ -127,7 +187,7 @@ class Header extends Component {
                     </Link>
                 </div>
                 <div className="menuWrap">
-                    <i className="fas fa-search" />
+                    <i className="fas fa-search" onClick={this.toggleFn} />
                 </div>
                 <SearchDateWrap toggle={toggle}>
                     <div className="radioWrap">
@@ -138,7 +198,7 @@ class Header extends Component {
                             value={false}
                             checked={!singleDate}
                             onChange={e => {
-                                this.singleDateFn(false);
+                                this.singleDateFn();
                             }}
                         />
                         일일 검색
@@ -148,7 +208,7 @@ class Header extends Component {
                             value={true}
                             checked={singleDate}
                             onChange={e => {
-                                this.singleDateFn(true);
+                                this.singleDateFn();
                             }}
                         />
                     </div>
@@ -184,7 +244,19 @@ class Header extends Component {
                             />
                         </>
                     )}
-                    <SearchBtn>검색하기</SearchBtn>
+                    <SearchBtn
+                        savable={savable}
+                        onClick={() => {
+                            if (!savable) {
+                                //modalType, title, contents, Fn
+                                modalFlag('err', '', errTxt);
+                            } else {
+                                this.searchFn();
+                            }
+                        }}
+                    >
+                        검색하기
+                    </SearchBtn>
                 </SearchDateWrap>
             </HeaderWrap>
         );
@@ -201,6 +273,12 @@ const mapStateToProps = state => {
 };
 const mapDispatchProps = dispatch => {
     return {
+        csvRequest: apiForm => {
+            dispatch({
+                type: 'CSV_CALL_REQUEST',
+                apiForm
+            });
+        },
         modalFlag: (modalType, title, contents, Fn) => {
             dispatch(actions.MODAL(modalType, title, contents, Fn));
         },

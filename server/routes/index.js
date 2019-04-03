@@ -11,7 +11,6 @@ router.get('/data', (req, res) => {
         getFlag = JSON.parse(req.query.data);
     }
     let allFilePath = [];
-    let result = [];
 
     fs.readdir(dirCsv, (err, files) => {
         if (err) {
@@ -22,14 +21,12 @@ router.get('/data', (req, res) => {
             allFilePath = files;
         } else {
             getFlag.map(v => {
-                if (files.indexOf(v + '.csv') !== -1) {
-                    allFilePath.push(v + '.csv');
-                }
+                allFilePath.push(v + '.csv');
             });
         }
         if (!allFilePath.length) res.json({ data: [], status: 200 });
         else {
-            results = Promise.all(
+            Promise.all(
                 allFilePath.map(v => {
                     return csv({ headers: ['user', 'event', 'count'] })
                         .fromFile(dirCsv + '/' + v)
@@ -38,10 +35,15 @@ router.get('/data', (req, res) => {
                                 date: v.replace(/\.csv$/, ''),
                                 report: jsonObj
                             };
+                        })
+                        .catch(e => {
+                            return {
+                                date: v.replace(/\.csv$/, ''),
+                                report: []
+                            };
                         });
                 })
-            );
-            results.then(v => {
+            ).then(v => {
                 const searchRange = allFilePath
                     .map(v => {
                         return Number(v.replace(/\.csv$/, ''));

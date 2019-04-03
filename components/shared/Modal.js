@@ -48,6 +48,7 @@ const ModalContainer = styled.div`
         }
         .contents {
             padding: 10px;
+            text-align: center;
         }
         .btns {
             overflow: hidden;
@@ -105,11 +106,11 @@ const Modal = props => {
                 <div className="titleWrap">
                     <div className="icon">
                         {modalType === 'que' ? (
-                            <i class="far fa-question-circle" />
+                            <i className="far fa-question-circle" />
                         ) : modalType === 'err' ? (
-                            <i class="fas fa-exclamation-triangle" />
+                            <i className="fas fa-exclamation-triangle" />
                         ) : (
-                            modalType === 'suc' && <i class="far fa-check-circle" />
+                            modalType === 'suc' && <i className="far fa-check-circle" />
                         )}
                     </div>
                     <div className="tit">{title}</div>
@@ -127,24 +128,35 @@ const Modal = props => {
                                   }
                         }
                     >
-                        <i class="fas fa-times" />
+                        <i className="fas fa-times" />
                     </div>
                 </div>
                 <div className="contents">{contents}</div>
-                {(cancel || confirm) && (
-                    <div className="btns">
-                        {cancel && (
-                            <div className="cancel" onClick={cancel}>
-                                취소
-                            </div>
-                        )}
-                        {confirm && (
-                            <div className="confirm" onClick={confirm}>
-                                확인
-                            </div>
-                        )}
-                    </div>
-                )}
+                <div className="btns">
+                    {cancel && (
+                        <div className="cancel" onClick={cancel}>
+                            취소
+                        </div>
+                    )}
+                    {(confirm || (cancel === null && confirm === null)) && (
+                        <div
+                            className="confirm"
+                            onClick={
+                                confirm
+                                    ? confirm
+                                    : () => {
+                                          //modalType, title, contents, Fn
+                                          modalFlag('', '', '', {
+                                              cancel: null,
+                                              confirm: null
+                                          });
+                                      }
+                            }
+                        >
+                            확인
+                        </div>
+                    )}
+                </div>
             </div>
         </ModalContainer>
     );
