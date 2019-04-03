@@ -14,7 +14,7 @@ router.get('/data', (req, res) => {
 
     fs.readdir(dirCsv, (err, files) => {
         if (err) {
-            res.json({ data: [], status: 404 });
+            res.json({ data: {}, status: 404, noData: true });
         }
         // console.log(files);
         if (!getFlag.length) {
@@ -24,7 +24,7 @@ router.get('/data', (req, res) => {
                 allFilePath.push(v + '.csv');
             });
         }
-        if (!allFilePath.length) res.json({ data: [], status: 200 });
+        if (!allFilePath.length) res.json({ data: {}, status: 200, noData: true });
         else {
             Promise.all(
                 allFilePath.map(v => {
@@ -43,18 +43,41 @@ router.get('/data', (req, res) => {
                             };
                         });
                 })
-            ).then(v => {
+            ).then(val => {
+                const totalData = {};
                 const searchRange = allFilePath
-                    .map(v => {
-                        return Number(v.replace(/\.csv$/, ''));
+                    .map(fv => {
+                        return Number(fv.replace(/\.csv$/, ''));
                     })
                     .sort((a, b) => {
                         return a - b;
                     });
-                if (v.length) {
-                    res.json({ data: v, status: 200, searchRange });
+                let noData = true;
+                if (val.length) {
+                    let dataObj = {};
+
+                    val.map(v => {
+                        dataObj[v.date] = v.report;
+                        if (v.report.length) {
+                            noData = false;
+                            v.report.map(rv => {
+                                if (totalData[rv.user]) {
+                                    if (totalData[rv.user][rv.event]) {
+                                        totalData[rv.user][rv.event] = totalData[rv.user][rv.event] + Number(rv.count);
+                                    } else {
+                                        totalData[rv.user][rv.event] = Number(rv.count);
+                                    }
+                                } else {
+                                    totalData[rv.user] = {};
+                                    totalData[rv.user][rv.event] = Number(rv.count);
+                                }
+                            });
+                        }
+                    });
+
+                    res.json({ data: dataObj, status: 200, searchRange, totalData, noData });
                 } else {
-                    res.json({ data: [], status: 200, searchRange });
+                    res.json({ data: {}, status: 200, searchRange, totalData, noData });
                 }
             });
         }

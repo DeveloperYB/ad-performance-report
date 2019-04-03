@@ -8,7 +8,11 @@ import Modal from './shared/Modal';
 import Loading from './shared/Loading';
 
 const LayoutContainer = styled.div`
-    padding-top: 40px;
+    padding-top: 45px;
+    .containerWrap {
+        max-width: 940px;
+        margin: 0 auto;
+    }
 `;
 
 class Layout extends Component {
@@ -25,7 +29,8 @@ class Layout extends Component {
         return (
             <LayoutContainer>
                 <Header />
-                {children}
+                <div className="containerWrap">{children}</div>
+
                 {modalType && <Modal />}
                 {csvLoading && <Loading />}
             </LayoutContainer>

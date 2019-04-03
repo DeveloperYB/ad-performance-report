@@ -3,7 +3,8 @@ export const actionTypes = {
     CSV_CALL_SUCCESS: 'CSV_CALL_SUCCESS',
     CSV_CALL_FAILURE: 'CSV_CALL_FAILURE',
     MODAL: 'MODAL',
-    CHANGEDATE: 'CHANGEDATE'
+    CHANGEDATE: 'CHANGEDATE',
+    SINGLEDATE: 'SINGLEDATE'
 };
 
 export const actions = {
@@ -18,5 +19,9 @@ export const actions = {
         type: actionTypes.CHANGEDATE,
         date,
         flag //single,start,end
+    }),
+    SINGLEDATE: flag => ({
+        type: actionTypes.SINGLEDATE,
+        flag
     })
 };

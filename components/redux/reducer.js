@@ -15,13 +15,17 @@ const initialState = {
     searchDate: {
         startDate: null,
         endDate: null
-    }
+    },
+    singleDate: false
 };
 
 //2018/12/30 ~ 2019/01/29
 
 const baseStore = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.SINGLEDATE:
+            return { ...state, singleDate: action.flag };
+            break;
         case actionTypes.CHANGEDATE:
             if (action.flag === 'start') {
                 return { ...state, searchDate: { ...state.searchDate, startDate: action.date } };
@@ -30,6 +34,7 @@ const baseStore = (state = initialState, action) => {
             } else {
                 return { ...state, searchDate: { startDate: action.date, endDate: null } };
             }
+            break;
         case actionTypes.MODAL:
             if (action) {
                 const {
@@ -57,30 +62,25 @@ const baseStore = (state = initialState, action) => {
             if (action) {
                 return {
                     ...state,
+                    data: {},
                     csvLoading: true
                 };
             }
             break;
         case actionTypes.CSV_CALL_SUCCESS:
             if (action) {
-                if (action.data.length) {
+                const { noData } = action.data;
+                if (!noData) {
                     return {
                         ...state,
                         csvLoading: false,
-                        modal: {
-                            modalType: 'err', //que , err , suc
-                            title: 'Non Data',
-                            contents: '정보가 없습니다.',
-                            Fn: {
-                                cancel: null,
-                                confirm: null
-                            }
-                        }
+                        data: action.data
                     };
                 }
                 return {
                     ...state,
                     csvLoading: false,
+                    data: {},
                     modal: {
                         modalType: 'err', //que , err , suc
                         title: 'Non Data',
@@ -98,6 +98,7 @@ const baseStore = (state = initialState, action) => {
                 return {
                     ...state,
                     csvLoading: false,
+                    data: {},
                     modal: {
                         modalType: 'err', //que , err , suc
                         title: 'API ERROR',

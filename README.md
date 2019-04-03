@@ -14,7 +14,7 @@ yarn start
 - Redux
 - Redux-saga
 - styled-components
-
+- recharts
 ---
 
 ### CSV data
@@ -37,5 +37,8 @@ query string
 
 
 ---
-/pages/_document.js : Next.js + styled-components
+
+### Custom Next.js config
+
+/pages/_document.js : Next.js + styled-components \
 /pages/_app.js : Next.js + Redux(+redux-saga)

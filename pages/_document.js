@@ -21,6 +21,15 @@ export default class MyDocument extends Document {
                     />
                     <link
                         rel="stylesheet"
+                        type="text/css"
+                        href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css"
+                    />
+                    <link
+                        href="https://fonts.googleapis.com/css?family=Lato|Nanum+Gothic|Noto+Sans+KR"
+                        rel="stylesheet"
+                    />
+                    <link
+                        rel="stylesheet"
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
                     />
                     <link

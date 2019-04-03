@@ -14,6 +14,7 @@ body {
  */
 
 html {
+    font-family: 'NanumSquareRound', 'Nanum Gothic', 'Noto Sans KR', 'Lato', sans-serif;
     line-height: 1.15; /* 1 */
     -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -27,6 +28,7 @@ html {
 
 body {
     margin: 0;
+    background: #f3f7fa;
 }
 
 /**
@@ -355,4 +357,23 @@ template {
 
 [hidden] {
     display: none;
+}
+
+.cb_clear:before,
+.cb_clear:after {
+    content: '\0020';
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+.cb_clear:after {
+    clear: both;
+}
+.cb_clear {
+    zoom: 1;
+}
+.ie8_clear {
+    clear: both;
 }
