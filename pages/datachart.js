@@ -5,7 +5,8 @@ import styled from 'styled-components';
 
 import { connect } from 'react-redux';
 import { actions } from '../components/redux';
-import moment from 'moment';
+import TotalPieChart from '../components/chart/TotalPieChart';
+import TotalBarChart from '../components/chart/TotalBarChart';
 
 const ErrWrap = styled.div`
     .ico {
@@ -130,7 +131,6 @@ class DataSearch extends Component {
         else return eng;
     }
     render() {
-        console.log(this);
         const { firstRender } = this.state;
         const {
             csvLoading,
@@ -139,7 +139,7 @@ class DataSearch extends Component {
         } = this.props;
         let startTimeTxt, endTimeTxt;
         if (searchRange.length) {
-            console.log(csvLoading, data, totalData, searchDate);
+            // console.log(csvLoading, data, totalData, searchDate);
             startTimeTxt = String(searchRange[0]);
             startTimeTxt = `${startTimeTxt.slice(2, 4)}년 ${startTimeTxt.slice(4, 6)}월 ${startTimeTxt.slice(6, 8)}일`;
             if (searchRange.length > 1) {
@@ -160,75 +160,74 @@ class DataSearch extends Component {
                     <>
                         {startTimeTxt ? (
                             <ChartContainer>
-                                <div className="blWrap">
-                                    <div className="bl6">
-                                        <div className="tit">광고 분석 기간</div>
-                                        <Dmb mb={15}>
-                                            {startTimeTxt}{' '}
-                                            {endTimeTxt ? (
-                                                <>
-                                                    ~ {endTimeTxt} ({searchRange.length}일 간의 데이터)
-                                                </>
-                                            ) : (
-                                                '하루'
-                                            )}
-                                        </Dmb>
-                                        <div className="tit">활동한 사용자</div>
-                                        <div>
-                                            {Object.keys(totalData).map((v, i) => {
-                                                return (
-                                                    <UserBadge key={i} user={v}>
-                                                        {this.transKr(v)}
-                                                    </UserBadge>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                    <div className="bl6">
-                                        <div className="tit">사용자 별 액션 합계</div>
-                                        <div>
-                                            {Object.keys(totalData).map((v, i) => {
-                                                return (
-                                                    <div className="cb_clear eachUserActWrap" key={i}>
-                                                        <div className="badgeWrap">
-                                                            <UserBadge key={i} user={v}>
-                                                                {this.transKr(v)}
-                                                            </UserBadge>
+                                <RowDiv>
+                                    <ColDiv col={2}>
+                                        <Paper>
+                                            <div className="tit">광고 분석 기간</div>
+                                            <Dmb mb={15}>
+                                                {startTimeTxt}{' '}
+                                                {endTimeTxt ? (
+                                                    <>
+                                                        ~ {endTimeTxt} ({searchRange.length}일 간의 데이터)
+                                                    </>
+                                                ) : (
+                                                    '하루'
+                                                )}
+                                            </Dmb>
+                                            <Divider div={15} />
+                                            <div className="tit" style={{ marginBottom: 0 }}>
+                                                사용자별 액션 평균 및 합계 요약정보
+                                            </div>
+                                            <div>
+                                                {Object.keys(totalData).map((v, i) => {
+                                                    return (
+                                                        <div className="cb_clear eachUserActWrap" key={i}>
+                                                            <div className="badgeWrap">
+                                                                <UserBadge key={i} user={v}>
+                                                                    {this.transKr(v)}
+                                                                </UserBadge>
+                                                            </div>
+                                                            <div className="dataWrap">
+                                                                {Object.keys(totalData[v]).map((ev, ei) => {
+                                                                    return (
+                                                                        <div key={ei}>
+                                                                            <b mb={10}>{this.transKr(ev)}</b>
+                                                                            <br />
+                                                                            {searchRange.length > 1 && (
+                                                                                <>
+                                                                                    평균{' '}
+                                                                                    {this.addComma(Math.floor(totalData[v][ev] / searchRange.length))}{' '}
+                                                                                    건 /{' '}
+                                                                                </>
+                                                                            )}
+                                                                            총 {this.addComma(totalData[v][ev])} 건
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
                                                         </div>
-                                                        <div className="dataWrap">
-                                                            {Object.keys(totalData[v]).map((ev, ei) => {
-                                                                return (
-                                                                    <div key={ei}>
-                                                                        <span>{this.transKr(ev)}</span> : <b>{this.addComma(totalData[v][ev])} 건</b>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="blWrap">
-                                    <div className="bl6">
-                                        <ul>
-                                            <li style={{ marginBottom: '5px' }}>
-                                                사용자로서 광고 성과의 통계에 대한 합계 및 평균값 요약 정보를 보고 싶다.
-                                            </li>
-                                            <li style={{ marginBottom: '5px' }}>
-                                                사용자로서 모든 일자에 대한 합계 및 평균값 광고 성과 통계를 확인하고 싶다.
-                                            </li>
-                                            <li style={{ marginBottom: '5px' }}>
-                                                사용자로서 광고 성과 통계를 역할별(부모님, 학생, 선생님)로 필터링을 하고 싶다.
-                                            </li>
-                                            <li style={{ marginBottom: '5px' }}>사용자로서 광고 성과 통계를 기간으로 필터링 하고 싶다.</li>
-                                            <li style={{ marginBottom: '5px' }}>
-                                                사용자로서 광고 성과 통계는 표와 차트 형태 등 효과적으로 시각화하여 보고 싶다.
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                                    );
+                                                })}
+                                            </div>
+                                            <Divider div={15} />
+                                            <TotalBarChart data={totalData} range={searchRange.length} />
+                                        </Paper>
+                                    </ColDiv>
+                                    <ColDiv col={2}>
+                                        <Paper>
+                                            <Dmb mb={20}>
+                                                <TotalPieChart data={totalData} base="user" />
+                                            </Dmb>
+
+                                            <TotalPieChart data={totalData} base="event" />
+                                        </Paper>
+                                    </ColDiv>
+                                </RowDiv>
+                                {/* <div className="item">
+                                    <Paper>
+                                        <TotalBarChart data={totalData} base="event" />
+                                    </Paper>
+                                </div> */}
                             </ChartContainer>
                         ) : (
                             <ErrWrap>
@@ -246,6 +245,26 @@ class DataSearch extends Component {
         );
     }
 }
+const Divider = styled.div`
+    height: 1px;
+    background: #ddd;
+    width: 98%;
+    margin: ${({ div = 0 }) => `${div}px`} auto;
+`;
+const RowDiv = styled.div`
+    display: block;
+    overflow: hidden;
+    box-sizing: border-box;
+`;
+const ColDiv = styled.div`
+    overflow: hidden;
+    float: left;
+    width: ${({ col }) => Number(100 / col - 2)}%;
+    margin: 1%;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+`;
 const UserBadge = styled.span`
     display: inline-block;
     margin: 0 5px;
@@ -255,11 +274,11 @@ const UserBadge = styled.span`
     border-radius: 10px;
     background: ${({ user }) => {
         if (user === 'parent') {
-            return `#31454a`;
+            return `#6b5b95`;
         } else if (user === 'student') {
-            return `#f7cb08`;
+            return `#d64161`;
         } else if (user === 'teacher') {
-            return `#ff605a`;
+            return `#ff7b25`;
         } else return `#000`;
     }};
     color: #fff;
@@ -270,42 +289,24 @@ const UserBadge = styled.span`
 const Dmb = styled.div`
     margin-bottom: ${({ mb }) => (mb ? `${mb}px;` : `0;`)};
 `;
+const Paper = styled.div`
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    box-shadow: 0 2px 0 -1px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: ${({ height = 'auto' }) => height};
+    box-sizing: border-box;
+`;
 const ChartContainer = styled.div`
-    .blWrap {
-        display: flex;
-        @media (max-width: 768px) {
-            flex-direction: column;
-        }
-    }
     font-size: 14px;
-    .bl12,
-    .bl6 {
-        background-color: #fff;
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
-        box-shadow: 0 2px 0 -1px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        box-sizing: border-box;
-        margin: 1.5%;
-        &.bl12 {
-            width: 100%;
-            margin: 1% 0;
-        }
-        &.bl6 {
-            width: 47%;
-            @media (max-width: 768px) {
-                width: 95%;
-                margin: 1% 2.5%;
-            }
-        }
-        .tit {
-            font-size: 1.1em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+    .tit {
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
     .eachUserActWrap {
-        margin: 10px 0;
+        margin: 20px 0;
         &:last-child {
             margin-bottom: 0;
         }

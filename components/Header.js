@@ -5,7 +5,6 @@ import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { actions } from '../components/redux';
-import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const HeaderWrap = styled.div`
@@ -22,7 +21,7 @@ const HeaderWrap = styled.div`
         float: left;
     }
     > div {
-        max-width: 940px;
+        max-width: 1050px;
         margin: 0 auto;
     }
     .menuWrap {
@@ -191,10 +190,7 @@ class Header extends Component {
                     singleDateFn(true);
                     csvDataArr = [formatDate(new Date(dateStrFormat(start)))];
                 } else if (start) {
-                    csvDataArr = getDates(
-                        new Date(dateStrFormat(start)),
-                        new Date(dateStrFormat(end))
-                    );
+                    csvDataArr = getDates(new Date(dateStrFormat(start)), new Date(dateStrFormat(end)));
                 }
                 csvRequest({
                     url: '/api/',
@@ -331,15 +327,9 @@ class Header extends Component {
                                         modalFlag('err', '', errTxt);
                                     } else {
                                         if (singleDate) {
-                                            Router.push(
-                                                `/datachart?start=${this.formatDate(startDate)}`
-                                            );
+                                            Router.push(`/datachart?start=${this.formatDate(startDate)}`);
                                         } else {
-                                            Router.push(
-                                                `/datachart?start=${this.formatDate(
-                                                    startDate
-                                                )}&end=${this.formatDate(endDate)}`
-                                            );
+                                            Router.push(`/datachart?start=${this.formatDate(startDate)}&end=${this.formatDate(endDate)}`);
                                         }
                                         this.toggleFn();
                                     }

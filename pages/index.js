@@ -43,9 +43,9 @@ class Index extends Component {
                     <div className="tit">광고 성과 보고서</div>
                     <div className="date">데이터 기간은 2018/12/30 ~ 2019/01/29 까지 입니다.</div>
                     <div className="info">
-                        우측 상단 테스트 버튼 또는 데이터 기간(2018/12/30 ~ 2019/01/29)
+                        우측 상단 테스트 버튼 또는 기간을 선택
                         <br />
-                        기간검색 또는 일일 검색으로 검색하시면 됩니다.
+                        기간검색, 일일 검색으로 검색하시면 됩니다.
                     </div>
                     <div className="chartTit">검색을 통해 볼 수 있는 정보 및 기능</div>
                     <div className="chartInfo">

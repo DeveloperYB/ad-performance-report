@@ -10,7 +10,7 @@ import Loading from './shared/Loading';
 const LayoutContainer = styled.div`
     padding-top: 45px;
     .containerWrap {
-        max-width: 940px;
+        max-width: 1050px;
         margin: 0 auto;
     }
 `;
