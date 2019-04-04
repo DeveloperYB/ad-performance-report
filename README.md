@@ -1,4 +1,11 @@
-# Ad Performance Report : 작업중.
+# Ad Performance Report
+
+웹 | 모바일
+------------ | -------------
+![웹](mdImg/screenshot_web.png?raw=true "Title") | ![모바일](mdImg/screenshot_mobile.png?raw=true "Title")
+
+
+---
 
 ### 실행 방법
 yarn install \

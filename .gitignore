@@ -14,3 +14,6 @@ yarn-error.log*
 
 # Next.js
 /.next
+
+#markdown_img
+/mdImg
