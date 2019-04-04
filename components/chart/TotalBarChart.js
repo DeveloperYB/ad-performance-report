@@ -11,26 +11,18 @@ const COLORS = {
     click: ['#06c79c', '#c601ff', '#ffc601'],
     watch: ['#cb9783', '#83cb97', '#9783cb']
 };
-const UserBadge = styled.span`
-    display: inline-block;
-    margin: 0 5px;
-    font-size: 0.8em;
-    padding: 4px 9px;
-    color: #333;
-    border-radius: 10px;
-    border: 3px solid ${({ act }) => (act ? `#00a47b` : `transparent`)};
-    background: ${({ user }) => {
-        if (COLORS[user]) {
-            return COLORS[user][0];
-        } else return `#000`;
-    }};
-    color: #fff;
-    &:first-child {
-        margin-left: 0;
+const CustomToolTip = styled.div`
+    background: #fff;
+    border: 1px solid #00a47b;
+    opacity: 0.7;
+    line-height: 1.2;
+    font-size: 13px;
+    padding: 10px;
+    .intro {
+        font-weight: bold;
+        margin-bottom: 8px;
     }
-    cursor: pointer;
 `;
-
 const addComma = num => {
     var regexp = /\B(?=(\d{3})+(?!\d))/g;
     return num.toString().replace(regexp, ',');
@@ -68,7 +60,7 @@ const TotalBarChart = props => {
         });
     return (
         <>
-            <div className="tit">각 사용자 액션별 평균차트</div>
+            <div className="tit">각 사용자 행동별 평균차트</div>
             <div>
                 <ResponsiveContainer width={'100%'} height={200}>
                     <BarChart data={data}>
@@ -77,7 +69,6 @@ const TotalBarChart = props => {
                         <YAxis />
                         <Tooltip
                             content={({ active, payload, label }) => {
-                                // console.log(active, payload, label);
                                 if (active) {
                                     return (
                                         <CustomToolTip>
@@ -105,16 +96,4 @@ const TotalBarChart = props => {
         </>
     );
 };
-const CustomToolTip = styled.div`
-    background: #fff;
-    border: 1px solid #00a47b;
-    opacity: 0.7;
-    line-height: 1.2;
-    font-size: 13px;
-    padding: 10px;
-    .intro {
-        font-weight: bold;
-        margin-bottom: 8px;
-    }
-`;
 export default TotalBarChart;

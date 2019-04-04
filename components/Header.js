@@ -226,12 +226,18 @@ class Header extends Component {
                 else errTxt = '시간선택을 먼저 해주세요.';
             } else {
                 if (timeRange[0] && timeRange[1]) {
-                    if (timeRange[0] <= timeRange[1]) savable = true;
-                    else errTxt = '시간선택이 잘못 되었습니다.';
+                    if (timeRange[0] <= timeRange[1]) {
+                        const diffTime = Math.abs(timeRange[1] - timeRange[0]);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        if (diffDays <= 31) {
+                            savable = true;
+                        } else {
+                            errTxt = '기간검색은 최대 한달 입니다.';
+                        }
+                    } else errTxt = '시간선택이 잘못 되었습니다.';
                 } else errTxt = '시간선택을 먼저 해주세요.';
             }
         }
-        // console.log(savable, errTxt);
         return (
             <HeaderWrap>
                 <div className="cb_clear">
@@ -248,8 +254,6 @@ class Header extends Component {
                                 className="testBtn"
                                 onClick={() => {
                                     // 데이터 파일 기간 : 2018/12/30 ~ 2019/01/29
-                                    changeDate(new Date('12/30/2018'), 'start');
-                                    changeDate(new Date('01/29/2019'), 'end');
                                     if (singleDate) {
                                         singleDateFn(!singleDate);
                                     }

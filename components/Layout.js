@@ -18,7 +18,6 @@ const LayoutContainer = styled.div`
 class Layout extends Component {
     constructor(props) {
         super(props);
-        // console.log(props);
         const { data } = props;
         this.state = {
             data

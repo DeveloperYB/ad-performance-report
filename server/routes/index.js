@@ -16,7 +16,6 @@ router.get('/data', (req, res) => {
         if (err) {
             res.json({ data: {}, status: 404, noData: true });
         }
-        // console.log(files);
         if (!getFlag.length) {
             allFilePath = files;
         } else {

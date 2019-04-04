@@ -15,15 +15,25 @@ const UserBadge = styled.span`
     margin: 0 5px;
     font-size: 0.8em;
     padding: 4px 9px;
-    color: #333;
     border-radius: 10px;
-    border: 3px solid ${({ act }) => (act ? `#00a47b` : `transparent`)};
-    background: ${({ user }) => {
+    border: 3px solid
+        ${({ user }) => {
+            if (COLORS[user]) {
+                return COLORS[user][0];
+            } else return `#000`;
+        }};
+    background: ${({ act, user }) => {
+        if (!act) return `#fff`;
         if (COLORS[user]) {
             return COLORS[user][0];
         } else return `#000`;
     }};
-    color: #fff;
+    color: ${({ act, user }) => {
+        if (act) return `#fff`;
+        if (COLORS[user]) {
+            return COLORS[user][0];
+        } else return `#000`;
+    }};
     &:first-child {
         margin-left: 0;
     }
@@ -60,10 +70,10 @@ const TotalPieChart = props => {
     } else {
         showData = Object.keys(actData[pieAct]).map(v => ({ name: v, value: actData[pieAct][v] }));
     }
-    if (base === 'user') console.log('showData', showData);
+
     return (
         <>
-            <div className="tit">{base === 'user' ? '활동한 사용자별' : '분석된 액션별'} 보기 (하단 버튼 클릭)</div>
+            <div className="tit">{base === 'user' ? '활동한 사용자별' : '분석된 행동별'} 보기 (하단 버튼 클릭)</div>
             <div>
                 {Object.keys(base === 'user' ? data : actData).map((v, i) => {
                     return (
