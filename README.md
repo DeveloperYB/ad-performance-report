@@ -2,7 +2,8 @@
 
 웹 | 모바일
 ------------ | -------------
-![웹](mdImg/screenshot_web.png?raw=true "Title") | ![모바일](mdImg/screenshot_mobile.png?raw=true "Title")
+<img src="mdImg/screenshot_web.png" height="900"> | <img src="mdImg/screenshot_mobile.png" height="900">
+
 
 
 ---
