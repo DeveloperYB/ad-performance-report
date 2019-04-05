@@ -1,8 +1,6 @@
-// import '@babel/polyfill';
 import { put, takeLatest, takeEvery, all, call, delay, fork } from 'redux-saga/effects';
 import { actionTypes } from '../redux';
 import fetch from 'isomorphic-unfetch';
-import csv from 'csvtojson';
 
 function Fetch(apiForm) {
     const { url, path = '', params = {} } = apiForm;
@@ -11,9 +9,7 @@ function Fetch(apiForm) {
         for (let paramsName in params) {
             if (params.hasOwnProperty(paramsName)) {
                 mergeParams += `${mergeParams && '&'}${paramsName}=${
-                    typeof params[paramsName] === 'object'
-                        ? JSON.stringify(params[paramsName])
-                        : params[paramsName]
+                    typeof params[paramsName] === 'object' ? JSON.stringify(params[paramsName]) : params[paramsName]
                 }`;
             }
         }
