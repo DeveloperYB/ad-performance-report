@@ -45,6 +45,7 @@ query string
 
 ```
 API : /api/data
+Type : GET
 Query string
 data : json string (array)
 
