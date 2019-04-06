@@ -43,6 +43,25 @@ query string
 
 빈 어레이 일시, 모든 csv 파일 정보 GET
 
+```
+API : /api/data
+Query string
+data : json string (array)
+
+response
+{
+    data : Object
+    noData : Boolean,
+    searchRange : Array,
+    status : Number (200,404),
+    totalData : Object
+}
+```
+
+> data : 날짜 Key, 해당 Key 날짜 데이터 Array \
+noData : 검색 날짜 내 데이터 유무 \
+searchRange : 검색 날짜 Array \
+totalData : 검색 날짜 데이터 이벤트 별 총합
 
 ---
 
